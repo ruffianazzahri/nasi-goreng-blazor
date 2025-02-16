@@ -1,0 +1,38 @@
+﻿@page "/nasigorengs"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using NasiGorengBlazor.Models
+@implements IAsyncDisposable
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="nasigorengs/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="context.NasiGorengs">
+    <PropertyColumn Property="nasigoreng => nasigoreng.Nama" />
+    <PropertyColumn Property="nasigoreng => nasigoreng.Bahan" />
+    <PropertyColumn Property="nasigoreng => nasigoreng.Harga" />
+    @* <PropertyColumn Property="nasigoreng => nasigoreng.Img" /> *@
+
+    <TemplateColumn Context="nasigoreng">
+        <a href="@($"nasigorengs/edit?id={nasigoreng.Id}")">Edit</a> |
+        <a href="@($"nasigorengs/details?id={nasigoreng.Id}")">Details</a> |
+        <a href="@($"nasigorengs/delete?id={nasigoreng.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private ApplicationDbContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

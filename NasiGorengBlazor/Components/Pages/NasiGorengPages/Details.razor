@@ -1,0 +1,50 @@
+﻿@page "/nasigorengs/details"
+@using Microsoft.EntityFrameworkCore
+@using NasiGorengBlazor.Models
+@inject IDbContextFactory<ApplicationDbContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>NasiGoreng</h2>
+    <hr />
+    @if (nasigoreng is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Nama</dt>
+            <dd class="col-sm-10">@nasigoreng.Nama</dd>
+            <dt class="col-sm-2">Bahan</dt>
+            <dd class="col-sm-10">@nasigoreng.Bahan</dd>
+            <dt class="col-sm-2">Harga</dt>
+            <dd class="col-sm-10">@nasigoreng.Harga</dd>
+        </dl>
+        <div>
+            <a href="@($"/nasigorengs/edit?id={nasigoreng.Id}")">Edit</a> |
+            <a href="@($"/nasigorengs")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private NasiGoreng? nasigoreng;
+
+    [SupplyParameterFromQuery]
+    private Guid Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        nasigoreng = await context.NasiGorengs.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (nasigoreng is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}
