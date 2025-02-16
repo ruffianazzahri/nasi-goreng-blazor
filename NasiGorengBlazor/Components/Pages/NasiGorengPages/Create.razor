@@ -3,118 +3,52 @@
 @using NasiGorengBlazor.Models
 @inject IDbContextFactory<ApplicationDbContext> DbFactory
 @inject NavigationManager NavigationManager
-@inject IWebHostEnvironment env
 
-<PageTitle>Create Nasi Goreng</PageTitle>
+<PageTitle>Create</PageTitle>
 
-<h1>Create Nasi Goreng</h1>
+<h1>Create</h1>
+
+<h2>NasiGoreng</h2>
 <hr />
-
 <div class="row">
-    <div class="col-md-6">
-        <EditForm Model="NasiGoreng" OnValidSubmit="AddNasiGoreng" FormName="create">
+    <div class="col-md-4">
+        <EditForm method="post" Model="NasiGoreng" OnValidSubmit="AddNasiGoreng" FormName="create" Enhance>
             <DataAnnotationsValidator />
-            <ValidationSummary class="text-danger" />
-
+            <ValidationSummary class="text-danger" role="alert"/>
             <div class="mb-3">
-                <label for="nama" class="form-label">Nama:</label>
-                <InputText id="nama" @bind-Value="NasiGoreng.Nama" class="form-control" required />
-                <ValidationMessage For="() => NasiGoreng.Nama" class="text-danger" />
-            </div>
-
+                <label for="nama" class="form-label">Nama:</label> 
+                <InputText id="nama" @bind-Value="NasiGoreng.Nama" class="form-control" /> 
+                <ValidationMessage For="() => NasiGoreng.Nama" class="text-danger" /> 
+            </div>        
             <div class="mb-3">
-                <label for="bahan" class="form-label">Bahan:</label>
-                <InputText id="bahan" @bind-Value="NasiGoreng.Bahan" class="form-control" required />
-                <ValidationMessage For="() => NasiGoreng.Bahan" class="text-danger" />
-            </div>
-
+                <label for="bahan" class="form-label">Bahan:</label> 
+                <InputText id="bahan" @bind-Value="NasiGoreng.Bahan" class="form-control" /> 
+                <ValidationMessage For="() => NasiGoreng.Bahan" class="text-danger" /> 
+            </div>        
             <div class="mb-3">
-                <label for="harga" class="form-label">Harga (Rp):</label>
-                <InputNumber id="harga" @bind-Value="NasiGoreng.Harga" class="form-control" required />
-                <ValidationMessage For="() => NasiGoreng.Harga" class="text-danger" />
-            </div>
-
-
-
-            <button type="submit" class="btn btn-primary">Simpan</button>
-            <a href="/nasigorengs" class="btn btn-secondary ms-2">Batal</a>
+                <label for="harga" class="form-label">Harga:</label> 
+                <InputNumber id="harga" @bind-Value="NasiGoreng.Harga" class="form-control" /> 
+                <ValidationMessage For="() => NasiGoreng.Harga" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
-
-        @* <h1>sss</h1> *@
-        @* <p>Filename : @FileName</p> *@
-        @* <p>Size : @FileSize.ToString("n0") bytes</p> *@
-        @* <p>Type @FileType</p> *@
-        @* <p>Modified : @LastModified</p> *@
-
-        @* <InputFile OnChange="UploadImage" /> *@
-
-        @* @if (!string.IsNullOrEmpty(ErrorMessage)) *@
-        @* { *@
-        @*     <p class="text-danger">❌ Error: @ErrorMessage</p> *@
-        @* } *@
-
-
-
-
     </div>
 </div>
 
+<div>
+    <a href="/nasigorengs">Back to List</a>
+</div>
+
 @code {
+    [SupplyParameterFromForm]
     private NasiGoreng NasiGoreng { get; set; } = new();
 
-
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
     private async Task AddNasiGoreng()
     {
-        using var context = await DbFactory.CreateDbContextAsync();
-
+        using var context = DbFactory.CreateDbContext();
         context.NasiGorengs.Add(NasiGoreng);
         await context.SaveChangesAsync();
         NavigationManager.NavigateTo("/nasigorengs");
     }
-
-
-    // public string FileName { get; set; } = "";
-    // public long FileSize { get; set; }
-    // public string FileType { get; set; } = "";
-    // public DateTimeOffset LastModified { get; set; }
-    // const int MAX_FILESIZE = 1000 * 1024;
-    // private string ErrorMessage;
-
-    // public async Task UploadImage(InputFileChangeEventArgs e)
-    // {
-    //     var file = e.File;
-    //     if (file != null)
-    //     {
-    //         FileSize = file.Size;
-    //         FileType = file.ContentType;
-    //         FileName = file.Name;
-    //         LastModified = file.LastModified;
-    //         return;
-    //     }
-    //     if (file == null)
-    //     {
-    //         Console.WriteLine("❌ Tidak ada file yang dipilih!");
-    //         return;
-    //     }
-
-
-    //     try
-    //     {
-    //         var fileStream = file.OpenReadStream(MAX_FILESIZE);
-
-    //         var randomFile = Path.GetTempFileName();
-    //         var extension = Path.GetExtension(file.Name);
-    //         var targetFilePath = Path.ChangeExtension(randomFile, extension);
-
-    //         var targetStream = new FileStream(targetFilePath, FileMode.Create);
-    //         await fileStream.CopyToAsync(targetStream);
-    //         targetStream.Close();
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         ErrorMessage = ex.Message;
-    //         Console.WriteLine($"❌ Error upload gambar: {ex.Message}");
-    //     }
-    // }
-
 }

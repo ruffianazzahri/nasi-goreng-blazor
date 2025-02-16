@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NasiGorengBlazor")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+27c5a90345bd4330eed425be53919f6d4a781a10")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6edf64b7ac1959e2e8c7b7be0c0c9bc9f9e2a3e4")]
 [assembly: System.Reflection.AssemblyProductAttribute("NasiGorengBlazor")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NasiGorengBlazor")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
